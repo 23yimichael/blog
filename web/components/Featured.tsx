@@ -25,7 +25,7 @@ const Featured = () => {
   ];
 
   return (
-    <div className="flex items-center justify-center space-x-16 mt-32">
+    <div className="flex items-center justify-center 2xl:space-x-16 lg:space-x-12 xl:space-x-14 2xl:mt-32 lg:mt-8 xl:mt-12">
       <FeaturedBig data={data[0]} />
       <Divider orientation="vertical" variant="middle" flexItem />
       <div>

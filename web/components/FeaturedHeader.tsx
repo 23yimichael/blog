@@ -1,4 +1,3 @@
-import { Divider } from "@mui/material";
 import React from "react";
 
 interface Props {
@@ -8,10 +7,10 @@ interface Props {
 const FeaturedHeader: React.FC<Props> = ({ text }) => {
   return (
     <div className="flex items-center">
-      <Divider sx={{ width: "25%" }}>
-        <div className="font-poppins font-semibold text-5xl px-4">{text}</div>
-      </Divider>
-      <div className="font-poppins font-medium text-2xl ml-auto">
+      <div className="font-poppins font-semibold 2xl:text-5xl xl:text-3xl lg:text-xl px-4">
+        {text}
+      </div>
+      <div className="font-poppins font-medium 2xl:text-2xl xl:text-lg lg:text-sm ml-auto">
         View All →
       </div>
     </div>
