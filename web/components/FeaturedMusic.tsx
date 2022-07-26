@@ -26,7 +26,7 @@ const FeaturedMusic = () => {
 
   return (
     <div className="flex flex-col items-center justify-center mt-48">
-      <div className="2xl:w-[1400px] xl:w-[1000px] lg:w-[800px]">
+      <div className="2xl:w-[1550px] xl:w-[1000px] lg:w-[800px]">
         <FeaturedHeader text="Music" />
         <FeaturedHorizontal data={data[0]} />
         <FeaturedHorizontal data={data[1]} />
