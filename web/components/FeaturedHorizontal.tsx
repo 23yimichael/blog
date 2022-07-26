@@ -15,7 +15,7 @@ const FeaturedHorizontal: React.FC<Props> = ({ data }) => {
       <div className="flex items-center space-x-16">
         <img
           src={data.img}
-          className="2xl:w-[450px] 2xl:h-[250px] xl:w-[350px] xl:h-[195px] lg:w-[250px] lg:h-[140px] rounded-xl"
+          className="2xl:w-[450px] xl:w-[350px] lg:w-[250px] aspect-[5/3] rounded-xl"
         />
         <div>
           <div className="font-poppins font-semibold 2xl:text-xl xl:text-base lg:text-sm text-gray">

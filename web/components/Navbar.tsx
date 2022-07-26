@@ -13,7 +13,7 @@ const Navbar = () => {
           Music
         </div>
       </Link>
-      <Link href="/filmtv">
+      <Link href="/film-tv">
         <div className="font-poppins hover:cursor-pointer duration-500 hover:text-gray">
           Film/TV
         </div>

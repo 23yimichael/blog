@@ -10,7 +10,6 @@ const Landing = () => {
       <Featured />
       <FeaturedMusic />
       <FeaturedFilmTV />
-      <Footer />
     </Layout>
   );
 };

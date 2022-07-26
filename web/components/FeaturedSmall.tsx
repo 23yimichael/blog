@@ -22,7 +22,7 @@ const FeaturedSmall: React.FC<Props> = ({ margin, data }) => {
         2xl:w-[350px] lg:w-[250px] xl:w-[300px]`}
       >
         <img
-          className="2xl:w-[350px] lg:w-[250px] xl:w-[300px] 2xl:h-[200px] lg:h-[140px] xl:h-[170px] rounded-xl"
+          className="2xl:w-[350px] lg:w-[250px] xl:w-[300px] aspect-[5/3] rounded-xl"
           src={data.img}
         />
         <div className="font-poppins font-semibold text-gray 2xl:text-base lg:text-sm xl:text-md mt-6">

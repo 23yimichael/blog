@@ -31,13 +31,12 @@ const FeaturedFilmTV = () => {
 
   return (
     <div className="flex flex-col items-center justify-center mt-48">
-      <div className="2xl:w-[1550px] xl:w-[1000px] lg:w-[800px]">
+      <div className="2xl:w-[1550px] xl:w-[1050px] lg:w-[800px]">
         <FeaturedHeader text="Film/TV" />
-        <div className="flex mt-24 2xl:space-x-4 xl:space-x-6 lg:space-x-4">
-          <FeaturedVertical data={data[0]} />
-          <FeaturedVertical data={data[1]} />
-          <FeaturedVertical data={data[2]} />
-          <FeaturedVertical data={data[3]} />
+        <div className="flex mt-24 2xl:space-x-4 xl:space-x-2 lg:space-x-1">
+          {data.map((v) => (
+            <FeaturedVertical data={v} />
+          ))}
         </div>
       </div>
     </div>
