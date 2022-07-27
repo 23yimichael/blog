@@ -1,8 +1,9 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 
 interface Props {
   data: {
+    id: number;
     img: string;
     genre: string;
     title: string;
@@ -16,7 +17,9 @@ const FeaturedBig: React.FC<Props> = ({ data }) => {
   return (
     <div
       className="hover:cursor-pointer duration-300 hover:bg-[#F2F2F2] p-6 rounded-xl"
-      onClick={() => router.push(`/view/${"1"}`)}
+      onClick={() => {
+        router.push(`/view/${data.id}`);
+      }}
     >
       <div className="lg:w-[400px] xl:w-[600px] 2xl:w-[800px]">
         <img

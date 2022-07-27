@@ -3,6 +3,7 @@ import React from "react";
 interface Props {
   margin?: boolean;
   data: {
+    id: number;
     img: string;
     genre: string;
     title: string;
