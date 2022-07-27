@@ -1,13 +1,14 @@
 import React from "react";
 
 interface Props {
+  key: number;
   data: {
     name: string;
     bio: string;
   };
 }
 
-const Profile: React.FC<Props> = ({ data }) => {
+const Profile: React.FC<Props> = ({ key, data }) => {
   return (
     <div className="flex flex-col items-center w-[300px]">
       <img

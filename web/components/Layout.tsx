@@ -24,6 +24,7 @@ const Layout: React.FC<Props> = ({ children }) => {
         transition={{ duration: 1, type: "easeInOut" }}
         style={{ position: "relative" }}
         variants={variants}
+        className="min-h-screen"
       >
         {children}
       </motion.div>

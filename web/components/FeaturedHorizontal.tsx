@@ -1,6 +1,7 @@
 import React from "react";
 
 interface Props {
+  key: number;
   data: {
     img: string;
     date: string;
@@ -9,7 +10,7 @@ interface Props {
   };
 }
 
-const FeaturedHorizontal: React.FC<Props> = ({ data }) => {
+const FeaturedHorizontal: React.FC<Props> = ({ key, data }) => {
   return (
     <div className="mt-8 hover:cursor-pointer duration-300 hover:bg-[#F2F2F2] p-4 rounded-xl">
       <div className="flex items-center space-x-16">
