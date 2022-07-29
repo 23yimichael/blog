@@ -12,7 +12,7 @@ interface Props {
 
 const FeaturedVertical: React.FC<Props> = ({ key, data }) => {
   return (
-    <div className="mt-2 hover:cursor-pointer duration-300 hover:bg-[#F2F2F2] p-4 rounded-xl">
+    <div className="mt-2 hover:cursor-pointer duration-300 hover:bg-lightgray p-4 rounded-xl">
       <div className={`2xl:w-[350px] xl:w-[225px] lg:w-[150px]`}>
         <img
           className="2xl:w-[350px] xl:w-[225px] lg:w-[150px] aspect-[5/3] rounded-xl"

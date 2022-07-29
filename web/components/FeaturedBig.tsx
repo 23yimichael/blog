@@ -16,7 +16,7 @@ const FeaturedBig: React.FC<Props> = ({ data }) => {
 
   return (
     <div
-      className="hover:cursor-pointer duration-300 hover:bg-[#F2F2F2] p-6 rounded-xl"
+      className="hover:cursor-pointer duration-300 hover:bg-lightgray p-6 rounded-xl"
       onClick={() => {
         router.push(`/view/${data.id}`);
       }}

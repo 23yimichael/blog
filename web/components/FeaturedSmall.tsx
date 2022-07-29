@@ -16,7 +16,7 @@ const FeaturedSmall: React.FC<Props> = ({ margin, data }) => {
     <div
       className={`${
         margin ? "mt-2" : null
-      } hover:cursor-pointer duration-300 hover:bg-[#F2F2F2] p-4 rounded-xl`}
+      } hover:cursor-pointer duration-300 hover:bg-lightgray p-4 rounded-xl`}
     >
       <div
         className={`

@@ -29,7 +29,7 @@ const AboutUs = () => {
           </div>
           <div className="flex space-x-6 mt-12">
             {data.map((v) => (
-              <Profile key={data.id} data={v} />
+              <Profile key={v.id} data={v} />
             ))}
           </div>
         </div>

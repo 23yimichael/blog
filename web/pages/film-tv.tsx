@@ -98,7 +98,7 @@ const Music = () => {
           </div>
           <div className="mt-12 grid grid-cols-3 gap-4">
             {data.map((v) => (
-              <FeaturedVertical key={data.id} data={v} />
+              <FeaturedVertical key={v.id} data={v} />
             ))}
           </div>
         </div>
