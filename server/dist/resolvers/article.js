@@ -26,31 +26,9 @@ let ArticleResolver = class ArticleResolver {
             },
         });
         if (data[2].featured === -1) {
-            return [];
+            return null;
         }
         return [data[2], data[1], data[0]];
-    }
-    async updateFeaturedArticle(id, featured) {
-        if (featured < 0)
-            return false;
-        const cur = await Article_1.Article.findOne({ where: { featured } });
-        if (cur) {
-            await (0, typeorm_1.getConnection)()
-                .getRepository(Article_1.Article)
-                .createQueryBuilder()
-                .update({ featured: -1 })
-                .where({ id })
-                .returning("*")
-                .execute();
-        }
-        await (0, typeorm_1.getConnection)()
-            .getRepository(Article_1.Article)
-            .createQueryBuilder()
-            .update({ featured })
-            .where({ id })
-            .returning("*")
-            .execute();
-        return true;
     }
     async readArticles(genre, take) {
         let data;
@@ -58,7 +36,7 @@ let ArticleResolver = class ArticleResolver {
             data = await Article_1.Article.find({
                 where: { genre },
                 order: {
-                    updatedAt: "DESC",
+                    createdAt: "DESC",
                 },
                 take,
             });
@@ -67,7 +45,7 @@ let ArticleResolver = class ArticleResolver {
             data = await Article_1.Article.find({
                 where: { genre },
                 order: {
-                    updatedAt: "DESC",
+                    createdAt: "DESC",
                 },
             });
         }
@@ -81,7 +59,7 @@ let ArticleResolver = class ArticleResolver {
         await Article_1.Article.delete({ id });
         return true;
     }
-    async updateArticle(id, title, genre, img, text) {
+    async updateArticle(id, title, genre, img, text, featured) {
         if (img.length === 0) {
             return {
                 error: {
@@ -114,13 +92,34 @@ let ArticleResolver = class ArticleResolver {
                 },
             };
         }
-        await (0, typeorm_1.getConnection)()
-            .getRepository(Article_1.Article)
-            .createQueryBuilder()
-            .update({ title, genre, img, text })
-            .where({ id })
-            .returning("*")
-            .execute();
+        if (featured >= 0) {
+            const cur = await Article_1.Article.findOne({ where: { featured } });
+            if (cur) {
+                await (0, typeorm_1.getConnection)()
+                    .getRepository(Article_1.Article)
+                    .createQueryBuilder()
+                    .update({ featured: -1 })
+                    .where({ id: cur.id })
+                    .returning("*")
+                    .execute();
+            }
+            await (0, typeorm_1.getConnection)()
+                .getRepository(Article_1.Article)
+                .createQueryBuilder()
+                .update({ title, genre, img, text, featured })
+                .where({ id })
+                .returning("*")
+                .execute();
+        }
+        else {
+            await (0, typeorm_1.getConnection)()
+                .getRepository(Article_1.Article)
+                .createQueryBuilder()
+                .update({ title, genre, img, text })
+                .where({ id })
+                .returning("*")
+                .execute();
+        }
         const article = await Article_1.Article.findOne({ where: { id } });
         return { article };
     }
@@ -175,14 +174,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ArticleResolver.prototype, "readFeaturedArticles", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => Boolean),
-    __param(0, (0, type_graphql_1.Arg)("id", () => type_graphql_1.Int)),
-    __param(1, (0, type_graphql_1.Arg)("featured", () => type_graphql_1.Int)),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Number]),
-    __metadata("design:returntype", Promise)
-], ArticleResolver.prototype, "updateFeaturedArticle", null);
-__decorate([
     (0, type_graphql_1.Query)(() => [Article_1.Article]),
     __param(0, (0, type_graphql_1.Arg)("genre")),
     __param(1, (0, type_graphql_1.Arg)("take", () => type_graphql_1.Int, { nullable: true })),
@@ -211,8 +202,9 @@ __decorate([
     __param(2, (0, type_graphql_1.Arg)("genre")),
     __param(3, (0, type_graphql_1.Arg)("img")),
     __param(4, (0, type_graphql_1.Arg)("text")),
+    __param(5, (0, type_graphql_1.Arg)("featured", () => type_graphql_1.Int)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, String, String, String, String]),
+    __metadata("design:paramtypes", [Number, String, String, String, String, Number]),
     __metadata("design:returntype", Promise)
 ], ArticleResolver.prototype, "updateArticle", null);
 __decorate([

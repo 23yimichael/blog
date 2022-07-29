@@ -30,9 +30,7 @@ const Music = () => {
           </div>
           <div className="mt-12 grid grid-cols-3 gap-4">
             {!fetching && data
-              ? data.readArticles.map((v) => (
-                  <FeaturedVertical key={v.id} data={v} />
-                ))
+              ? data.readArticles.map((v) => <FeaturedVertical data={v} />)
               : null}
           </div>
         </div>

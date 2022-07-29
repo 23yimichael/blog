@@ -15,7 +15,6 @@ import {
   useDeleteArticleMutation,
   useReadArticleQuery,
   useUpdateArticleMutation,
-  useUpdateFeaturedArticleMutation,
 } from "../../generated/graphql";
 import Context from "../../utils/context";
 import { createUrqlClient } from "../../utils/createUrqlClient";
@@ -31,7 +30,6 @@ const Edit = () => {
   });
   const [, updateArticle] = useUpdateArticleMutation();
   const [, deleteArticle] = useDeleteArticleMutation();
-  const [, updateFeaturedArticle] = useUpdateFeaturedArticleMutation();
 
   const [img, setImg] = useState("");
   const [imgError, setImgError] = useState("");
@@ -61,27 +59,19 @@ const Edit = () => {
       genre,
       img,
       text,
+      featured,
     });
-    if (!response.data?.updateArticle.error) {
-      router.push(`/view/${response.data?.updateArticle.article?.id}`);
-    } else {
-      if (response.data.updateArticle.error.field === "Image") {
-        setImgError(response.data.updateArticle.error.message);
-      } else if (response.data.updateArticle.error.field === "Title") {
-        setTitleError(response.data.updateArticle.error.message);
-      } else if (response.data.updateArticle.error.field === "Genre") {
-        setGenreError(response.data.updateArticle.error.message);
-      } else {
-        setTextError(response.data.updateArticle.error.message);
-      }
+    if (response?.data?.updateArticle?.error?.field === "Image") {
+      setImgError(response.data.updateArticle.error.message);
+    } else if (response.data?.updateArticle.error?.field === "Title") {
+      setTitleError(response.data?.updateArticle.error?.message);
+    } else if (response.data?.updateArticle.error?.field === "Genre") {
+      setGenreError(response.data?.updateArticle.error.message);
+    } else if (response.data?.updateArticle.error?.field === "Text") {
+      setTextError(response?.data?.updateArticle?.error?.message);
     }
 
-    if (featured !== -1) {
-      await updateFeaturedArticle({
-        id: parseInt(router.query.id as string),
-        featured,
-      });
-    }
+    router.push(`/view/${response.data?.updateArticle.article?.id}`);
     e.preventDefault();
   };
 

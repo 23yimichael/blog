@@ -61,7 +61,6 @@ export type Mutation = {
   login: UserResponse;
   register: Author;
   updateArticle: ArticleResponse;
-  updateFeaturedArticle: Scalars['Boolean'];
 };
 
 
@@ -92,17 +91,12 @@ export type MutationRegisterArgs = {
 
 
 export type MutationUpdateArticleArgs = {
+  featured: Scalars['Int'];
   genre: Scalars['String'];
   id: Scalars['Int'];
   img: Scalars['String'];
   text: Scalars['String'];
   title: Scalars['String'];
-};
-
-
-export type MutationUpdateFeaturedArticleArgs = {
-  featured: Scalars['Int'];
-  id: Scalars['Int'];
 };
 
 export type Query = {
@@ -161,18 +155,11 @@ export type UpdateArticleMutationVariables = Exact<{
   genre: Scalars['String'];
   img: Scalars['String'];
   text: Scalars['String'];
-}>;
-
-
-export type UpdateArticleMutation = { __typename?: 'Mutation', updateArticle: { __typename?: 'ArticleResponse', error?: { __typename?: 'Error', field: string, message: string } | null, article?: { __typename?: 'Article', id: number } | null } };
-
-export type UpdateFeaturedArticleMutationVariables = Exact<{
-  id: Scalars['Int'];
   featured: Scalars['Int'];
 }>;
 
 
-export type UpdateFeaturedArticleMutation = { __typename?: 'Mutation', updateFeaturedArticle: boolean };
+export type UpdateArticleMutation = { __typename?: 'Mutation', updateArticle: { __typename?: 'ArticleResponse', error?: { __typename?: 'Error', field: string, message: string } | null, article?: { __typename?: 'Article', id: number } | null } };
 
 export type ReadAboutUsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -244,8 +231,15 @@ export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
 };
 export const UpdateArticleDocument = gql`
-    mutation updateArticle($id: Int!, $title: String!, $genre: String!, $img: String!, $text: String!) {
-  updateArticle(id: $id, title: $title, genre: $genre, img: $img, text: $text) {
+    mutation updateArticle($id: Int!, $title: String!, $genre: String!, $img: String!, $text: String!, $featured: Int!) {
+  updateArticle(
+    id: $id
+    title: $title
+    genre: $genre
+    img: $img
+    text: $text
+    featured: $featured
+  ) {
     error {
       field
       message
@@ -259,15 +253,6 @@ export const UpdateArticleDocument = gql`
 
 export function useUpdateArticleMutation() {
   return Urql.useMutation<UpdateArticleMutation, UpdateArticleMutationVariables>(UpdateArticleDocument);
-};
-export const UpdateFeaturedArticleDocument = gql`
-    mutation updateFeaturedArticle($id: Int!, $featured: Int!) {
-  updateFeaturedArticle(id: $id, featured: $featured)
-}
-    `;
-
-export function useUpdateFeaturedArticleMutation() {
-  return Urql.useMutation<UpdateFeaturedArticleMutation, UpdateFeaturedArticleMutationVariables>(UpdateFeaturedArticleDocument);
 };
 export const ReadAboutUsDocument = gql`
     query readAboutUs {

@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import React from "react";
 
 interface Props {
-  key: number;
   data: {
     id: number;
     img: string;
@@ -12,7 +11,7 @@ interface Props {
   };
 }
 
-const FeaturedVertical: React.FC<Props> = ({ key, data }) => {
+const FeaturedVertical: React.FC<Props> = ({ data }) => {
   const router = useRouter();
 
   return (
@@ -31,9 +30,12 @@ const FeaturedVertical: React.FC<Props> = ({ key, data }) => {
         <div className="font-poppins font-semibold 2xl:text-2xl xl:text-lg lg:text-base mt-3">
           {data.title}
         </div>
-        <div className="font-poppins 2xl:text-lg xl:text-sm lg:text-xs mt-2">
-          {data.text.substring(0, 200) + "..."}
-        </div>
+        <div
+          className="font-poppins 2xl:text-lg xl:text-base lg:text-sm mt-3"
+          dangerouslySetInnerHTML={{
+            __html: data.text.substring(0, 200) + "...",
+          }}
+        />
       </div>
     </div>
   );

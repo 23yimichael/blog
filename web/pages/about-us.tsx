@@ -17,7 +17,7 @@ const AboutUs = () => {
           <div className="flex space-x-6 mt-12">
             <>
               {!fetching && data
-                ? data?.readAboutUs.map((v) => <Profile key={v.id} data={v} />)
+                ? data?.readAboutUs.map((v) => <Profile data={v} />)
                 : null}
             </>
           </div>

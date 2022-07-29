@@ -32,9 +32,12 @@ const FeaturedBig: React.FC<Props> = ({ data }) => {
         <div className="font-poppins font-semibold 2xl:text-2xl xl:text-lg mt-2">
           {data.title}
         </div>
-        <div className="font-poppins 2xl:text-xs xl:text-[10px] lg:text-[8px] mt-3">
-          {data.text.substring(0, 1000) + "..."}
-        </div>
+        <div
+          className="font-poppins 2xl:text-xs xl:text-[10px] lg:text-[8px] mt-3"
+          dangerouslySetInnerHTML={{
+            __html: data.text.substring(0, 1000) + "...",
+          }}
+        />
       </div>
     </div>
   );

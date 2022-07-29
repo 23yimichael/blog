@@ -1,7 +1,6 @@
 import React from "react";
 
 interface Props {
-  key: number;
   data: {
     name: string;
     bio: string;
@@ -9,7 +8,7 @@ interface Props {
   };
 }
 
-const Profile: React.FC<Props> = ({ key, data }) => {
+const Profile: React.FC<Props> = ({ data }) => {
   return (
     <div className="flex flex-col items-center w-[300px]">
       <img src={data.pfp} className="w-[150px] h-[150px] rounded-full" />

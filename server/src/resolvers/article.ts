@@ -7,7 +7,7 @@ import { ArticleResponse } from "../utils/types";
 @Resolver()
 export class ArticleResolver {
   @Query(() => [Article])
-  async readFeaturedArticles(): Promise<Article[]> {
+  async readFeaturedArticles(): Promise<Article[] | null> {
     const data = await Article.find({
       order: {
         featured: "DESC",
@@ -15,36 +15,9 @@ export class ArticleResolver {
     });
 
     if (data[2].featured === -1) {
-      return [];
+      return null;
     }
     return [data[2], data[1], data[0]];
-  }
-
-  @Mutation(() => Boolean)
-  async updateFeaturedArticle(
-    @Arg("id", () => Int) id: number,
-    @Arg("featured", () => Int) featured: number
-  ): Promise<boolean> {
-    if (featured < 0) return false;
-    const cur = await Article.findOne({ where: { featured } });
-    if (cur) {
-      await getConnection()
-        .getRepository(Article)
-        .createQueryBuilder()
-        .update({ featured: -1 })
-        .where({ id })
-        .returning("*")
-        .execute();
-    }
-
-    await getConnection()
-      .getRepository(Article)
-      .createQueryBuilder()
-      .update({ featured })
-      .where({ id })
-      .returning("*")
-      .execute();
-    return true;
   }
 
   @Query(() => [Article])
@@ -57,7 +30,7 @@ export class ArticleResolver {
       data = await Article.find({
         where: { genre },
         order: {
-          updatedAt: "DESC",
+          createdAt: "DESC",
         },
         take,
       });
@@ -65,7 +38,7 @@ export class ArticleResolver {
       data = await Article.find({
         where: { genre },
         order: {
-          updatedAt: "DESC",
+          createdAt: "DESC",
         },
       });
     }
@@ -93,7 +66,8 @@ export class ArticleResolver {
     @Arg("title") title: string,
     @Arg("genre") genre: "Film/TV" | "Music",
     @Arg("img") img: string,
-    @Arg("text") text: string
+    @Arg("text") text: string,
+    @Arg("featured", () => Int) featured: number
   ): Promise<ArticleResponse> {
     if (img.length === 0) {
       return {
@@ -125,13 +99,33 @@ export class ArticleResolver {
       };
     }
 
-    await getConnection()
-      .getRepository(Article)
-      .createQueryBuilder()
-      .update({ title, genre, img, text })
-      .where({ id })
-      .returning("*")
-      .execute();
+    if (featured >= 0) {
+      const cur = await Article.findOne({ where: { featured } });
+      if (cur) {
+        await getConnection()
+          .getRepository(Article)
+          .createQueryBuilder()
+          .update({ featured: -1 })
+          .where({ id: cur.id })
+          .returning("*")
+          .execute();
+      }
+      await getConnection()
+        .getRepository(Article)
+        .createQueryBuilder()
+        .update({ title, genre, img, text, featured })
+        .where({ id })
+        .returning("*")
+        .execute();
+    } else {
+      await getConnection()
+        .getRepository(Article)
+        .createQueryBuilder()
+        .update({ title, genre, img, text })
+        .where({ id })
+        .returning("*")
+        .execute();
+    }
 
     const article = await Article.findOne({ where: { id } });
     return { article };

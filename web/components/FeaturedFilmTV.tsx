@@ -18,9 +18,7 @@ const FeaturedFilmTV = () => {
         <FeaturedHeader text="Film/TV" />
         <div className="flex mt-24 2xl:space-x-4 xl:space-x-2 lg:space-x-1">
           {!fetching && data
-            ? data.readArticles.map((v) => (
-                <FeaturedVertical key={v.id} data={v} />
-              ))
+            ? data.readArticles.map((v) => <FeaturedVertical data={v} />)
             : null}
         </div>
       </div>

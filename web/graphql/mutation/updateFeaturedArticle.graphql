@@ -1,3 +1,0 @@
-mutation updateFeaturedArticle($id: Int!, $featured: Int!) {
-  updateFeaturedArticle(id: $id, featured: $featured)
-}

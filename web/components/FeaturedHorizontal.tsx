@@ -30,9 +30,12 @@ const FeaturedHorizontal: React.FC<Props> = ({ data }) => {
           <div className="font-poppins font-semibold 2xl:text-2xl xl:text-xl lg:text-lg mt-4">
             {data.title}
           </div>
-          <div className="font-poppins 2xl:text-lg xl:text-base lg:text-sm mt-3">
-            {data.text.substring(0, 200) + "..."}
-          </div>
+          <div
+            className="font-poppins 2xl:text-lg xl:text-base lg:text-sm mt-3"
+            dangerouslySetInnerHTML={{
+              __html: data.text.substring(0, 200) + "...",
+            }}
+          />
         </div>
       </div>
     </div>

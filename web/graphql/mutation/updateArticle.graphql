@@ -4,8 +4,16 @@ mutation updateArticle(
   $genre: String!
   $img: String!
   $text: String!
+  $featured: Int!
 ) {
-  updateArticle(id: $id, title: $title, genre: $genre, img: $img, text: $text) {
+  updateArticle(
+    id: $id
+    title: $title
+    genre: $genre
+    img: $img
+    text: $text
+    featured: $featured
+  ) {
     error {
       field
       message
