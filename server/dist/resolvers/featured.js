@@ -14,7 +14,11 @@ const type_graphql_1 = require("type-graphql");
 const Featured_1 = require("../entities/Featured");
 let FeaturedResolver = class FeaturedResolver {
     async readFeaturedArticles() {
-        const data = await Featured_1.Featured.find();
+        const data = await Featured_1.Featured.find({
+            order: {
+                position: "ASC",
+            },
+        });
         return data;
     }
 };

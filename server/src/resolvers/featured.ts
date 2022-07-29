@@ -3,11 +3,13 @@ import { Featured } from "../entities/Featured";
 
 @Resolver()
 export class FeaturedResolver {
-  //needs ability to change featured articles
-
   @Query(() => [Featured])
   async readFeaturedArticles(): Promise<Featured[]> {
-    const data = await Featured.find();
+    const data = await Featured.find({
+      order: {
+        position: "ASC",
+      },
+    });
     return data;
   }
 }

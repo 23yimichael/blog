@@ -26,4 +26,4 @@ const FeaturedMusic = () => {
   );
 };
 
-export default withUrqlClient(createUrqlClient, { ssr: true })(FeaturedMusic);
+export default withUrqlClient(createUrqlClient)(FeaturedMusic);

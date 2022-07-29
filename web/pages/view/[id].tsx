@@ -1,11 +1,14 @@
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
+import { useContext } from "react";
 import Layout from "../../components/Layout";
 import { useReadArticleQuery } from "../../generated/graphql";
+import Context from "../../utils/context";
 import { createUrqlClient } from "../../utils/createUrqlClient";
 
 const View = () => {
   const router = useRouter();
+  const { user } = useContext(Context);
   const [{ data, fetching }] = useReadArticleQuery({
     variables: {
       id: parseInt(router.query.id as string),
@@ -21,8 +24,22 @@ const View = () => {
               <div className="font-poppins font-semibold text-base text-gray">
                 {data.readArticle.genre}
               </div>
-              <div className="font-poppins font-semibold text-base text-gray ml-auto">
-                {data.readArticle.date}
+              <div className="flex space-x-4 items-center ml-auto">
+                <div className="font-poppins font-semibold text-base text-gray">
+                  {data.readArticle.date}
+                </div>
+                {user && (
+                  <div
+                    onClick={() =>
+                      router.push(
+                        `/edit/${parseInt(router.query.id as string)}`
+                      )
+                    }
+                    className="hover:cursor-pointer duration-500 font-poppins font-semibold bg-teal-500 hover:bg-teal-300 text-white p-2 rounded-lg shadow-xl"
+                  >
+                    Edit
+                  </div>
+                )}
               </div>
             </div>
 

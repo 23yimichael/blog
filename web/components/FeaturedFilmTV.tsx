@@ -28,4 +28,4 @@ const FeaturedFilmTV = () => {
   );
 };
 
-export default withUrqlClient(createUrqlClient, { ssr: true })(FeaturedFilmTV);
+export default withUrqlClient(createUrqlClient)(FeaturedFilmTV);

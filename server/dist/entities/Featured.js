@@ -23,11 +23,11 @@ __decorate([
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Featured.prototype, "type", void 0);
+    __metadata("design:type", Number)
+], Featured.prototype, "position", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.OneToOne)(() => Article_1.Article, { lazy: true, nullable: true }),
     __metadata("design:type", Article_1.Article)
 ], Featured.prototype, "article", void 0);
 __decorate([
@@ -42,7 +42,7 @@ __decorate([
 ], Featured.prototype, "updateAt", void 0);
 Featured = __decorate([
     (0, type_graphql_1.ObjectType)(),
-    (0, type_graphql_1.Resolver)()
+    (0, typeorm_1.Entity)()
 ], Featured);
 exports.Featured = Featured;
 //# sourceMappingURL=Featured.js.map

@@ -1,15 +1,17 @@
-import { Field, ObjectType, Resolver } from "type-graphql";
+import { Field, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  Entity,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { Article } from "./Article";
 
 @ObjectType()
-@Resolver()
+@Entity()
 export class Featured extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
@@ -17,10 +19,10 @@ export class Featured extends BaseEntity {
 
   @Field()
   @Column()
-  type!: "big" | "small";
+  position!: number;
 
   @Field()
-  @Column()
+  @OneToOne(() => Article, { lazy: true, nullable: true })
   article!: Article;
 
   @Field()

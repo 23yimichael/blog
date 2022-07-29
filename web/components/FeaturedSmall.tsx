@@ -7,7 +7,7 @@ interface Props {
     img: string;
     genre: string;
     title: string;
-    desc: string;
+    text: string;
   };
 }
 
@@ -33,7 +33,7 @@ const FeaturedSmall: React.FC<Props> = ({ margin, data }) => {
           {data.title}
         </div>
         <div className="font-poppins 2xl:text-xs xl:text-[10px] lg:text-[8px] mt-3">
-          {data.desc}
+          {data.text.substring(0, 200) + "..."}
         </div>
       </div>
     </div>
