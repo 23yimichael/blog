@@ -22,11 +22,11 @@ const View = () => {
           <div className="w-[800px]">
             <div className="flex">
               <div className="font-poppins font-semibold text-base text-gray">
-                {data.readArticle.genre}
+                {data.readArticle.genre.toUpperCase()}
               </div>
               <div className="flex space-x-4 items-center ml-auto">
                 <div className="font-poppins font-semibold text-base text-gray">
-                  {data.readArticle.date}
+                  {data.readArticle.date.toUpperCase()}
                 </div>
                 {user && (
                   <div

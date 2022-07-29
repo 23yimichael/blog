@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React from "react";
 
 interface Props {
@@ -12,8 +13,11 @@ interface Props {
 }
 
 const FeaturedSmall: React.FC<Props> = ({ margin, data }) => {
+  const router = useRouter();
+
   return (
     <div
+      onClick={() => router.push(`/view/${data.id}`)}
       className={`${
         margin ? "mt-2" : null
       } hover:cursor-pointer duration-300 hover:bg-lightgray p-4 rounded-xl`}
