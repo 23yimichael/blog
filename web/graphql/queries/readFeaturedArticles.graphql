@@ -1,14 +1,10 @@
 query readFeaturedArticles {
   readFeaturedArticles {
     id
-    position
-    article {
-      id
-      img
-      genre
-      date
-      title
-      text
-    }
+    img
+    genre
+    date
+    title
+    text
   }
 }

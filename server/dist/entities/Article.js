@@ -46,6 +46,11 @@ __decorate([
     __metadata("design:type", String)
 ], Article.prototype, "text", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(),
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", Number)
+], Article.prototype, "featured", void 0);
+__decorate([
     (0, type_graphql_1.Field)(() => [Author_1.Author]),
     (0, typeorm_1.OneToMany)(() => Author_1.Author, (author) => author.articles, {
         lazy: true,

@@ -21,6 +21,7 @@ export type Article = {
   authors: Array<Author>;
   createdAt: Scalars['DateTime'];
   date: Scalars['String'];
+  featured: Scalars['Float'];
   genre: Scalars['String'];
   id: Scalars['Float'];
   img: Scalars['String'];
@@ -53,15 +54,6 @@ export type Error = {
   message: Scalars['String'];
 };
 
-export type Featured = {
-  __typename?: 'Featured';
-  article: Article;
-  createdAt: Scalars['DateTime'];
-  id: Scalars['Float'];
-  position: Scalars['Float'];
-  updateAt: Scalars['DateTime'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   createArticle: ArticleResponse;
@@ -69,6 +61,7 @@ export type Mutation = {
   login: UserResponse;
   register: Author;
   updateArticle: ArticleResponse;
+  updateFeaturedArticle: Scalars['Boolean'];
 };
 
 
@@ -106,12 +99,18 @@ export type MutationUpdateArticleArgs = {
   title: Scalars['String'];
 };
 
+
+export type MutationUpdateFeaturedArticleArgs = {
+  featured: Scalars['Int'];
+  id: Scalars['Int'];
+};
+
 export type Query = {
   __typename?: 'Query';
   readAboutUs: Array<Author>;
   readArticle: Article;
   readArticles: Array<Article>;
-  readFeaturedArticles: Array<Featured>;
+  readFeaturedArticles: Array<Article>;
 };
 
 
@@ -148,6 +147,14 @@ export type DeleteArticleMutationVariables = Exact<{
 
 export type DeleteArticleMutation = { __typename?: 'Mutation', deleteArticle: boolean };
 
+export type LoginMutationVariables = Exact<{
+  username: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', user?: { __typename?: 'Author', id: number } | null, error?: { __typename?: 'Error', field: string, message: string } | null } };
+
 export type UpdateArticleMutationVariables = Exact<{
   id: Scalars['Int'];
   title: Scalars['String'];
@@ -159,13 +166,13 @@ export type UpdateArticleMutationVariables = Exact<{
 
 export type UpdateArticleMutation = { __typename?: 'Mutation', updateArticle: { __typename?: 'ArticleResponse', error?: { __typename?: 'Error', field: string, message: string } | null, article?: { __typename?: 'Article', id: number } | null } };
 
-export type LoginMutationVariables = Exact<{
-  username: Scalars['String'];
-  password: Scalars['String'];
+export type UpdateFeaturedArticleMutationVariables = Exact<{
+  id: Scalars['Int'];
+  featured: Scalars['Int'];
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', user?: { __typename?: 'Author', id: number } | null, error?: { __typename?: 'Error', field: string, message: string } | null } };
+export type UpdateFeaturedArticleMutation = { __typename?: 'Mutation', updateFeaturedArticle: boolean };
 
 export type ReadAboutUsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -190,7 +197,7 @@ export type ReadArticlesQuery = { __typename?: 'Query', readArticles: Array<{ __
 export type ReadFeaturedArticlesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ReadFeaturedArticlesQuery = { __typename?: 'Query', readFeaturedArticles: Array<{ __typename?: 'Featured', id: number, position: number, article: { __typename?: 'Article', id: number, img: string, genre: string, date: string, title: string, text: string } }> };
+export type ReadFeaturedArticlesQuery = { __typename?: 'Query', readFeaturedArticles: Array<{ __typename?: 'Article', id: number, img: string, genre: string, date: string, title: string, text: string }> };
 
 
 export const CreateArticleDocument = gql`
@@ -219,6 +226,23 @@ export const DeleteArticleDocument = gql`
 export function useDeleteArticleMutation() {
   return Urql.useMutation<DeleteArticleMutation, DeleteArticleMutationVariables>(DeleteArticleDocument);
 };
+export const LoginDocument = gql`
+    mutation Login($username: String!, $password: String!) {
+  login(username: $username, password: $password) {
+    user {
+      id
+    }
+    error {
+      field
+      message
+    }
+  }
+}
+    `;
+
+export function useLoginMutation() {
+  return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
+};
 export const UpdateArticleDocument = gql`
     mutation updateArticle($id: Int!, $title: String!, $genre: String!, $img: String!, $text: String!) {
   updateArticle(id: $id, title: $title, genre: $genre, img: $img, text: $text) {
@@ -236,22 +260,14 @@ export const UpdateArticleDocument = gql`
 export function useUpdateArticleMutation() {
   return Urql.useMutation<UpdateArticleMutation, UpdateArticleMutationVariables>(UpdateArticleDocument);
 };
-export const LoginDocument = gql`
-    mutation Login($username: String!, $password: String!) {
-  login(username: $username, password: $password) {
-    user {
-      id
-    }
-    error {
-      field
-      message
-    }
-  }
+export const UpdateFeaturedArticleDocument = gql`
+    mutation updateFeaturedArticle($id: Int!, $featured: Int!) {
+  updateFeaturedArticle(id: $id, featured: $featured)
 }
     `;
 
-export function useLoginMutation() {
-  return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
+export function useUpdateFeaturedArticleMutation() {
+  return Urql.useMutation<UpdateFeaturedArticleMutation, UpdateFeaturedArticleMutationVariables>(UpdateFeaturedArticleDocument);
 };
 export const ReadAboutUsDocument = gql`
     query readAboutUs {
@@ -303,15 +319,11 @@ export const ReadFeaturedArticlesDocument = gql`
     query readFeaturedArticles {
   readFeaturedArticles {
     id
-    position
-    article {
-      id
-      img
-      genre
-      date
-      title
-      text
-    }
+    img
+    genre
+    date
+    title
+    text
   }
 }
     `;

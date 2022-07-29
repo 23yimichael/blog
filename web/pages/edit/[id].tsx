@@ -15,6 +15,7 @@ import {
   useDeleteArticleMutation,
   useReadArticleQuery,
   useUpdateArticleMutation,
+  useUpdateFeaturedArticleMutation,
 } from "../../generated/graphql";
 import Context from "../../utils/context";
 import { createUrqlClient } from "../../utils/createUrqlClient";
@@ -30,6 +31,7 @@ const Edit = () => {
   });
   const [, updateArticle] = useUpdateArticleMutation();
   const [, deleteArticle] = useDeleteArticleMutation();
+  const [, updateFeaturedArticle] = useUpdateFeaturedArticleMutation();
 
   const [img, setImg] = useState("");
   const [imgError, setImgError] = useState("");
@@ -39,6 +41,7 @@ const Edit = () => {
   const [textError, setTextError] = useState("");
   const [genre, setGenre] = useState("");
   const [genreError, setGenreError] = useState("");
+  const [featured, setFeatured] = useState(-1);
 
   const [open, setOpen] = useState(false);
 
@@ -71,6 +74,13 @@ const Edit = () => {
       } else {
         setTextError(response.data.updateArticle.error.message);
       }
+    }
+
+    if (featured !== -1) {
+      await updateFeaturedArticle({
+        id: parseInt(router.query.id as string),
+        featured,
+      });
     }
     e.preventDefault();
   };
@@ -142,6 +152,19 @@ const Edit = () => {
             <div className="font-poppins font-semibold text-red-500 text-sm">
               {genreError}
             </div>
+            <div className="font-poppins font-semibold text-gray text-sm">
+              Featured?
+            </div>
+            <select
+              value={featured}
+              className="border-b-[1px] border-lightgray p-4"
+              onChange={(e) => setFeatured(parseInt(e.target.value))}
+            >
+              <option value={-1}>No</option>
+              <option value={0}>Big</option>
+              <option value={1}>Upper Right</option>
+              <option value={2}>Lower Right</option>
+            </select>
             <Input
               error={imgError}
               label="Image Link"

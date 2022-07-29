@@ -7,6 +7,47 @@ import { ArticleResponse } from "../utils/types";
 @Resolver()
 export class ArticleResolver {
   @Query(() => [Article])
+  async readFeaturedArticles(): Promise<Article[]> {
+    const data = await Article.find({
+      order: {
+        featured: "DESC",
+      },
+    });
+
+    if (data[2].featured === -1) {
+      return [];
+    }
+    return [data[2], data[1], data[0]];
+  }
+
+  @Mutation(() => Boolean)
+  async updateFeaturedArticle(
+    @Arg("id", () => Int) id: number,
+    @Arg("featured", () => Int) featured: number
+  ): Promise<boolean> {
+    if (featured < 0) return false;
+    const cur = await Article.findOne({ where: { featured } });
+    if (cur) {
+      await getConnection()
+        .getRepository(Article)
+        .createQueryBuilder()
+        .update({ featured: -1 })
+        .where({ id })
+        .returning("*")
+        .execute();
+    }
+
+    await getConnection()
+      .getRepository(Article)
+      .createQueryBuilder()
+      .update({ featured })
+      .where({ id })
+      .returning("*")
+      .execute();
+    return true;
+  }
+
+  @Query(() => [Article])
   async readArticles(
     @Arg("genre") genre: string,
     @Arg("take", () => Int, { nullable: true }) take: number | null
@@ -139,6 +180,7 @@ export class ArticleResolver {
       date: format(new Date(), "MMMM do, yyyy").toUpperCase(),
       title,
       text,
+      featured: -1,
     }).save();
     return { article };
   }

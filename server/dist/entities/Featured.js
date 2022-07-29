@@ -22,12 +22,17 @@ __decorate([
 ], Featured.prototype, "id", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ unique: true }),
     __metadata("design:type", Number)
 ], Featured.prototype, "position", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.OneToOne)(() => Article_1.Article, { lazy: true, nullable: true }),
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Featured.prototype, "articleId", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    (0, typeorm_1.OneToOne)(() => Article_1.Article, { lazy: true }),
     __metadata("design:type", Article_1.Article)
 ], Featured.prototype, "article", void 0);
 __decorate([

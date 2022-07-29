@@ -19,6 +19,39 @@ const typeorm_1 = require("typeorm");
 const Article_1 = require("../entities/Article");
 const types_1 = require("../utils/types");
 let ArticleResolver = class ArticleResolver {
+    async readFeaturedArticles() {
+        const data = await Article_1.Article.find({
+            order: {
+                featured: "DESC",
+            },
+        });
+        if (data[2].featured === -1) {
+            return [];
+        }
+        return [data[2], data[1], data[0]];
+    }
+    async updateFeaturedArticle(id, featured) {
+        if (featured < 0)
+            return false;
+        const cur = await Article_1.Article.findOne({ where: { featured } });
+        if (cur) {
+            await (0, typeorm_1.getConnection)()
+                .getRepository(Article_1.Article)
+                .createQueryBuilder()
+                .update({ featured: -1 })
+                .where({ id })
+                .returning("*")
+                .execute();
+        }
+        await (0, typeorm_1.getConnection)()
+            .getRepository(Article_1.Article)
+            .createQueryBuilder()
+            .update({ featured })
+            .where({ id })
+            .returning("*")
+            .execute();
+        return true;
+    }
     async readArticles(genre, take) {
         let data;
         if (take) {
@@ -130,10 +163,25 @@ let ArticleResolver = class ArticleResolver {
             date: (0, date_fns_1.format)(new Date(), "MMMM do, yyyy").toUpperCase(),
             title,
             text,
+            featured: -1,
         }).save();
         return { article };
     }
 };
+__decorate([
+    (0, type_graphql_1.Query)(() => [Article_1.Article]),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], ArticleResolver.prototype, "readFeaturedArticles", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => Boolean),
+    __param(0, (0, type_graphql_1.Arg)("id", () => type_graphql_1.Int)),
+    __param(1, (0, type_graphql_1.Arg)("featured", () => type_graphql_1.Int)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", Promise)
+], ArticleResolver.prototype, "updateFeaturedArticle", null);
 __decorate([
     (0, type_graphql_1.Query)(() => [Article_1.Article]),
     __param(0, (0, type_graphql_1.Arg)("genre")),

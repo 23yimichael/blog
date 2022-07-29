@@ -12,10 +12,8 @@ const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const Article_1 = require("./entities/Article");
 const Author_1 = require("./entities/Author");
-const Featured_1 = require("./entities/Featured");
 const article_1 = require("./resolvers/article");
 const author_1 = require("./resolvers/author");
-const featured_1 = require("./resolvers/featured");
 const main = async () => {
     await (0, typeorm_1.createConnection)({
         type: "postgres",
@@ -24,7 +22,7 @@ const main = async () => {
         password: "postgres",
         logging: true,
         synchronize: true,
-        entities: [Article_1.Article, Author_1.Author, Featured_1.Featured],
+        entities: [Article_1.Article, Author_1.Author],
     });
     const app = (0, express_1.default)();
     app.use((0, cors_1.default)({
@@ -34,7 +32,7 @@ const main = async () => {
     const apolloServer = new apollo_server_express_1.ApolloServer({
         plugins: [(0, apollo_server_core_1.ApolloServerPluginLandingPageGraphQLPlayground)()],
         schema: await (0, type_graphql_1.buildSchema)({
-            resolvers: [article_1.ArticleResolver, author_1.AuthorResolver, featured_1.FeaturedResolver],
+            resolvers: [article_1.ArticleResolver, author_1.AuthorResolver],
             validate: false,
         }),
     });
