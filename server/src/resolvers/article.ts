@@ -1,5 +1,7 @@
-import { Arg, Int, Query, Resolver } from "type-graphql";
+import { format } from "date-fns";
+import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
 import { Article } from "../entities/Article";
+import { ArticleResponse } from "../utils/types";
 
 @Resolver()
 export class ArticleResolver {
@@ -27,5 +29,60 @@ export class ArticleResolver {
     }
 
     return data;
+  }
+
+  @Query(() => Article)
+  async readArticle(
+    @Arg("id", () => Int) id: number
+  ): Promise<Article | undefined> {
+    const article = await Article.findOne({ where: { id } });
+    return article;
+  }
+
+  @Mutation(() => ArticleResponse)
+  async createArticle(
+    @Arg("title") title: string,
+    @Arg("genre") genre: "Film/TV" | "Music",
+    @Arg("img") img: string,
+    @Arg("text") text: string
+  ): Promise<ArticleResponse> {
+    if (img.length === 0) {
+      return {
+        error: {
+          field: "Image",
+          message: "You must have a link to the image!",
+        },
+      };
+    } else if (title.length === 0) {
+      return {
+        error: {
+          field: "Title",
+          message: "You must have a title!",
+        },
+      };
+    } else if (text.length === 0) {
+      return {
+        error: {
+          field: "Text",
+          message: "You must submit text!",
+        },
+      };
+    } else if (genre.length === 0) {
+      return {
+        error: {
+          field: "Genre",
+          message: "You must select a genre!",
+        },
+      };
+    }
+
+    const article = await Article.create({
+      img,
+      genre,
+      date: format(new Date(), "MMMM do, yyyy").toUpperCase(),
+      title,
+      text,
+    }).save();
+    return { article };
   }
 }

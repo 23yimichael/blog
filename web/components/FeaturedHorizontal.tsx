@@ -1,18 +1,23 @@
+import { useRouter } from "next/router";
 import React from "react";
 
 interface Props {
-  key: number;
   data: {
+    id: number;
     img: string;
     date: string;
     title: string;
-    desc: string;
+    text: string;
   };
 }
 
-const FeaturedHorizontal: React.FC<Props> = ({ key, data }) => {
+const FeaturedHorizontal: React.FC<Props> = ({ data }) => {
+  const router = useRouter();
   return (
-    <div className="mt-8 hover:cursor-pointer duration-300 hover:bg-lightgray p-4 rounded-xl">
+    <div
+      onClick={() => router.push(`/view/${data.id}`)}
+      className="mt-8 hover:cursor-pointer duration-300 hover:bg-lightgray p-4 rounded-xl"
+    >
       <div className="flex items-center space-x-16">
         <img
           src={data.img}
@@ -26,7 +31,7 @@ const FeaturedHorizontal: React.FC<Props> = ({ key, data }) => {
             {data.title}
           </div>
           <div className="font-poppins 2xl:text-lg xl:text-base lg:text-sm mt-3">
-            {data.desc}
+            {data.text.substring(0, 200) + "..."}
           </div>
         </div>
       </div>

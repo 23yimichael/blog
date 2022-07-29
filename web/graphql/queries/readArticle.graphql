@@ -1,0 +1,10 @@
+query readArticle($id: Int!) {
+  readArticle(id: $id) {
+    id
+    img
+    genre
+    date
+    title
+    text
+  }
+}

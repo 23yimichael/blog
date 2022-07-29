@@ -30,9 +30,11 @@ const Navbar = () => {
         </div>
       </Link>
       {user ? (
-        <div className="hover:cursor-pointer duration-500 bg-teal-500 hover:bg-teal-300 px-4 py-2 rounded-lg shadow-lg">
-          <div className="font-poppins  text-white">Add</div>
-        </div>
+        <Link href="/create">
+          <div className="hover:cursor-pointer duration-500 bg-teal-500 hover:bg-teal-300 px-4 py-2 rounded-lg shadow-lg">
+            <div className="font-poppins  text-white">Create</div>
+          </div>
+        </Link>
       ) : null}
       {user ? (
         <div

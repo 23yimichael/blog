@@ -37,7 +37,7 @@ let AuthorResolver = class AuthorResolver {
             return {
                 error: {
                     field: "Username",
-                    message: "Username does not exist.",
+                    message: "Username does not exist!",
                 },
             };
         }
@@ -46,7 +46,7 @@ let AuthorResolver = class AuthorResolver {
             return {
                 error: {
                     field: "Password",
-                    message: "Incorrect password.",
+                    message: "Incorrect password!",
                 },
             };
         }

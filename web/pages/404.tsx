@@ -1,6 +1,6 @@
 import Layout from "../components/Layout";
 
-const page404 = () => {
+const Page404 = () => {
   return (
     <Layout>
       <div className="flex flex-col h-screen justify-center items-center">
@@ -13,4 +13,4 @@ const page404 = () => {
   );
 };
 
-export default page404;
+export default Page404;

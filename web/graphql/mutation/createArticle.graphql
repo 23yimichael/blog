@@ -1,0 +1,16 @@
+mutation createArticle(
+  $title: String!
+  $genre: String!
+  $img: String!
+  $text: String!
+) {
+  createArticle(title: $title, genre: $genre, img: $img, text: $text) {
+    error {
+      field
+      message
+    }
+    article {
+      id
+    }
+  }
+}

@@ -31,7 +31,7 @@ export class AuthorResolver {
       return {
         error: {
           field: "Username",
-          message: "Username does not exist.",
+          message: "Username does not exist!",
         },
       };
     }
@@ -41,7 +41,7 @@ export class AuthorResolver {
       return {
         error: {
           field: "Password",
-          message: "Incorrect password.",
+          message: "Incorrect password!",
         },
       };
     }

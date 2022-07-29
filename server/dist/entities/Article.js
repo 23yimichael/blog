@@ -47,7 +47,10 @@ __decorate([
 ], Article.prototype, "text", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => [Author_1.Author]),
-    (0, typeorm_1.OneToMany)(() => Author_1.Author, (author) => author.articles, { lazy: true }),
+    (0, typeorm_1.OneToMany)(() => Author_1.Author, (author) => author.articles, {
+        lazy: true,
+        nullable: true,
+    }),
     __metadata("design:type", Array)
 ], Article.prototype, "authors", void 0);
 __decorate([

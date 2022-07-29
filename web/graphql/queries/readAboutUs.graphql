@@ -1,0 +1,8 @@
+query readAboutUs {
+  readAboutUs {
+    id
+    name
+    bio
+    pfp
+  }
+}

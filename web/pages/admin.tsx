@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
+import Form from "../components/Form";
+import Input from "../components/Input";
 import { useLoginMutation } from "../generated/graphql";
 import { variants } from "../utils/constants";
 import Context from "../utils/context";
@@ -12,6 +14,8 @@ const Admin = () => {
   const [, login] = useLoginMutation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const { setUser } = useContext(Context);
 
   const handleSubmit = async (e: any) => {
@@ -23,6 +27,12 @@ const Admin = () => {
       );
       setUser(response.data!.login.user!.id);
       router.push("/");
+    } else {
+      if (response.data.login.error.field === "Username") {
+        setUsernameError(response.data.login.error.message);
+      } else {
+        setPasswordError(response.data.login.error.message);
+      }
     }
     e.preventDefault();
   };
@@ -38,26 +48,20 @@ const Admin = () => {
       className="min-h-screen"
     >
       <div className="flex h-screen items-center justify-center">
-        <div className="flex flex-col space-y-4 w-96">
-          <div className="font-poppins font-semibold text-gray text-sm">
-            Username
-          </div>
-          <input
+        <Form>
+          <Input
+            error={usernameError}
+            label="Username"
+            setValue={setUsername}
             type="text"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="border-b-[1px] border-lightgray p-4"
-            placeholder="Username"
           />
-          <div className="font-poppins font-semibold text-gray text-sm">
-            Password
-          </div>
-          <input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+          <Input
+            error={passwordError}
+            label="Password"
+            setValue={setPassword}
             type="password"
-            className="border-b-[1px] border-lightgray p-4"
-            placeholder="Password"
+            value={password}
           />
           <div
             onClick={handleSubmit}
@@ -65,7 +69,7 @@ const Admin = () => {
           >
             Login
           </div>
-        </div>
+        </Form>
       </div>
     </motion.div>
   );

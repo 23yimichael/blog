@@ -1,24 +1,11 @@
+import { withUrqlClient } from "next-urql";
 import Layout from "../components/Layout";
 import Profile from "../components/Profile";
+import { useReadAboutUsQuery } from "../generated/graphql";
+import { createUrqlClient } from "../utils/createUrqlClient";
 
 const AboutUs = () => {
-  const data = [
-    {
-      id: 0,
-      name: "Michael Yi",
-      bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    },
-    {
-      id: 1,
-      name: "Ian Park",
-      bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    },
-    {
-      id: 2,
-      name: "Christian Beckering",
-      bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    },
-  ];
+  const [{ data, fetching }] = useReadAboutUsQuery();
 
   return (
     <Layout>
@@ -28,9 +15,11 @@ const AboutUs = () => {
             About Us
           </div>
           <div className="flex space-x-6 mt-12">
-            {data.map((v) => (
-              <Profile key={v.id} data={v} />
-            ))}
+            <>
+              {!fetching && data
+                ? data?.readAboutUs.map((v) => <Profile key={v.id} data={v} />)
+                : null}
+            </>
           </div>
         </div>
       </div>
@@ -38,4 +27,4 @@ const AboutUs = () => {
   );
 };
 
-export default AboutUs;
+export default withUrqlClient(createUrqlClient, { ssr: true })(AboutUs);

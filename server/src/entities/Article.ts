@@ -38,7 +38,10 @@ export class Article extends BaseEntity {
   text!: string;
 
   @Field(() => [Author])
-  @OneToMany(() => Author, (author) => author.articles, { lazy: true })
+  @OneToMany(() => Author, (author) => author.articles, {
+    lazy: true,
+    nullable: true,
+  })
   authors!: Author[];
 
   @Field()

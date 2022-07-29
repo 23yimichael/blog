@@ -29,6 +29,12 @@ export type Article = {
   updatedAt: Scalars['DateTime'];
 };
 
+export type ArticleResponse = {
+  __typename?: 'ArticleResponse';
+  article?: Maybe<Article>;
+  error?: Maybe<Error>;
+};
+
 export type Author = {
   __typename?: 'Author';
   articles: Array<Article>;
@@ -58,8 +64,17 @@ export type Featured = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createArticle: ArticleResponse;
   login: UserResponse;
   register: Author;
+};
+
+
+export type MutationCreateArticleArgs = {
+  genre: Scalars['String'];
+  img: Scalars['String'];
+  text: Scalars['String'];
+  title: Scalars['String'];
 };
 
 
@@ -78,8 +93,14 @@ export type MutationRegisterArgs = {
 export type Query = {
   __typename?: 'Query';
   readAboutUs: Array<Author>;
+  readArticle: Article;
   readArticles: Array<Article>;
   readFeaturedArticles: Array<Featured>;
+};
+
+
+export type QueryReadArticleArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -94,6 +115,16 @@ export type UserResponse = {
   user?: Maybe<Author>;
 };
 
+export type CreateArticleMutationVariables = Exact<{
+  title: Scalars['String'];
+  genre: Scalars['String'];
+  img: Scalars['String'];
+  text: Scalars['String'];
+}>;
+
+
+export type CreateArticleMutation = { __typename?: 'Mutation', createArticle: { __typename?: 'ArticleResponse', error?: { __typename?: 'Error', field: string, message: string } | null, article?: { __typename?: 'Article', id: number } | null } };
+
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -102,7 +133,44 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', user?: { __typename?: 'Author', id: number } | null, error?: { __typename?: 'Error', field: string, message: string } | null } };
 
+export type ReadAboutUsQueryVariables = Exact<{ [key: string]: never; }>;
 
+
+export type ReadAboutUsQuery = { __typename?: 'Query', readAboutUs: Array<{ __typename?: 'Author', id: number, name: string, bio: string, pfp: string }> };
+
+export type ReadArticleQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type ReadArticleQuery = { __typename?: 'Query', readArticle: { __typename?: 'Article', id: number, img: string, genre: string, date: string, title: string, text: string } };
+
+export type ReadArticlesQueryVariables = Exact<{
+  genre: Scalars['String'];
+  take?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type ReadArticlesQuery = { __typename?: 'Query', readArticles: Array<{ __typename?: 'Article', id: number, img: string, genre: string, date: string, title: string, text: string }> };
+
+
+export const CreateArticleDocument = gql`
+    mutation createArticle($title: String!, $genre: String!, $img: String!, $text: String!) {
+  createArticle(title: $title, genre: $genre, img: $img, text: $text) {
+    error {
+      field
+      message
+    }
+    article {
+      id
+    }
+  }
+}
+    `;
+
+export function useCreateArticleMutation() {
+  return Urql.useMutation<CreateArticleMutation, CreateArticleMutationVariables>(CreateArticleDocument);
+};
 export const LoginDocument = gql`
     mutation Login($username: String!, $password: String!) {
   login(username: $username, password: $password) {
@@ -119,4 +187,50 @@ export const LoginDocument = gql`
 
 export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
+};
+export const ReadAboutUsDocument = gql`
+    query readAboutUs {
+  readAboutUs {
+    id
+    name
+    bio
+    pfp
+  }
+}
+    `;
+
+export function useReadAboutUsQuery(options?: Omit<Urql.UseQueryArgs<ReadAboutUsQueryVariables>, 'query'>) {
+  return Urql.useQuery<ReadAboutUsQuery, ReadAboutUsQueryVariables>({ query: ReadAboutUsDocument, ...options });
+};
+export const ReadArticleDocument = gql`
+    query readArticle($id: Int!) {
+  readArticle(id: $id) {
+    id
+    img
+    genre
+    date
+    title
+    text
+  }
+}
+    `;
+
+export function useReadArticleQuery(options: Omit<Urql.UseQueryArgs<ReadArticleQueryVariables>, 'query'>) {
+  return Urql.useQuery<ReadArticleQuery, ReadArticleQueryVariables>({ query: ReadArticleDocument, ...options });
+};
+export const ReadArticlesDocument = gql`
+    query readArticles($genre: String!, $take: Int) {
+  readArticles(genre: $genre, take: $take) {
+    id
+    img
+    genre
+    date
+    title
+    text
+  }
+}
+    `;
+
+export function useReadArticlesQuery(options: Omit<Urql.UseQueryArgs<ReadArticlesQueryVariables>, 'query'>) {
+  return Urql.useQuery<ReadArticlesQuery, ReadArticlesQueryVariables>({ query: ReadArticlesDocument, ...options });
 };

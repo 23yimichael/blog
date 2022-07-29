@@ -1,0 +1,10 @@
+query readArticles($genre: String!, $take: Int) {
+  readArticles(genre: $genre, take: $take) {
+    id
+    img
+    genre
+    date
+    title
+    text
+  }
+}
